@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXE LINKS - Royal Affiliates & Deals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .royal-gradient { background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 pb-12">
+
+    <!-- User Login Modal -->
+    <div id="userModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-amber-500/30 rounded-3xl p-8 w-full max-w-sm shadow-2xl text-center">
+            <div class="mb-4 flex justify-center">
+                <div class="w-16 h-16 rounded-full royal-gradient flex items-center justify-center text-3xl shadow-lg">👑</div>
+            </div>
+            <h2 class="text-2xl font-bold font-serif mb-1 tracking-wide text-amber-100">LUXE LINKS</h2>
+            <p class="text-xs text-amber-300/80 mb-6 italic">Welcome to Rich Peoples</p>
+            
+            <input type="tel" id="userMobile" placeholder="Enter Mobile Number" maxlength="10" class="w-full bg-slate-800 border border-slate-700 px-4 py-3 rounded-xl mb-4 text-sm text-center text-white focus:outline-none focus:border-amber-500">
+            <button onclick="saveUser()" class="w-full royal-gradient text-slate-950 font-bold py-3 rounded-xl text-sm shadow-lg tracking-wider uppercase">Login with OTP</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full royal-gradient flex items-center justify-center text-slate-950 font-bold text-lg shadow">👑</div>
+                <div>
+                    <h1 class="text-base font-bold font-serif tracking-wide text-amber-200">LUXE LINKS</h1>
+                    <p class="text-[10px] text-amber-400/80 tracking-wider">Welcome to Rich Peoples</p>
+                </div>
+            </div>
+            <button onclick="openAdminModal()" class="bg-slate-800 border border-amber-500/40 text-amber-200 text-xs px-3 py-1.5 rounded-full font-medium hover:bg-slate-700 transition">Admin Panel</button>
+        </div>
+        <!-- Search Box -->
+        <div class="max-w-4xl mx-auto px-4 pb-3">
+            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="🔍 Search luxury deals..." class="w-full bg-slate-800/90 border border-slate-700 px-4 py-2 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-6">
+        <!-- Banner -->
+        <div class="bg-gradient-to-r from-amber-900/60 via-amber-800/40 to-slate-900 border border-amber-500/30 rounded-2xl p-6 shadow-xl mb-8">
+            <h2 class="text-xl font-bold font-serif mb-2 text-amber-200">ವಿಶೇಷ ಇಷಾರಾಮಿ ಕೊಡುಗೆಗಳು</h2>
+            <p class="text-xs text-slate-300 opacity-90">ಕೇವಲ ನಿಮಗಾಗಿ ಆರಿಸಲಾದ ಅತ್ಯುನ್ನತ ರೋಯಲ್ ಡೀಲ್ಸ್.</p>
+        </div>
+
+        <!-- Products Grid -->
+        <h3 class="text-sm font-bold uppercase tracking-wider mb-4 text-amber-400/90">Trending Luxury Collection</h3>
+        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <!-- Dynamic Products -->
+        </div>
+    </main>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+            <h3 class="text-base font-bold mb-4 text-amber-200 font-serif">Admin Authentication</h3>
+            <input type="password" id="adminPassword" placeholder="Enter Password (1234)" class="w-full bg-slate-800 border border-slate-700 px-3 py-2 rounded-xl mb-4 text-sm text-white focus:outline-none focus:border-amber-500">
+            <div class="flex justify-end gap-2">
+                <button onclick="closeAdminModal()" class="px-4 py-2 text-xs text-slate-400">Cancel</button>
+                <button onclick="verifyAdmin()" class="royal-gradient text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div id="adminDashboard" class="fixed inset-0 bg-slate-950 hidden z-50 overflow-y-auto p-4 text-slate-100">
+        <div class="max-w-2xl mx-auto bg-slate-900 border border-amber-500/30 rounded-3xl shadow-2xl p-6 my-6">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                <h2 class="text-lg font-bold text-amber-300 font-serif">👑 Royal Admin Dashboard</h2>
+                <button onclick="closeDashboard()" class="text-slate-400 font-bold text-lg">✕</button>
+            </div>
+
+            <!-- Add Product Section -->
+            <div class="mb-6 bg-slate-800/60 p-4 rounded-2xl border border-slate-700">
+                <h4 class="font-semibold text-xs mb-3 text-amber-200">Add New Luxury Product</h4>
+                <div class="space-y-3">
+                    <input type="text" id="prodTitle" placeholder="Product Name (e.g. Rolex Watch)" class="w-full bg-slate-900 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white">
+                    <input type="text" id="prodPrice" placeholder="Price (e.g. $15,000)" class="w-full bg-slate-900 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white">
+                    <input type="text" id="prodImage" placeholder="Image URL (Paste Link)" class="w-full bg-slate-900 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white">
+                    <input type="text" id="prodLink" placeholder="Affiliate Buy Link" class="w-full bg-slate-900 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white">
+                    <button onclick="addProductManually()" class="w-full royal-gradient text-slate-950 font-bold py-2.5 rounded-xl text-xs shadow">Publish Product</button>
+                </div>
+            </div>
+
+            <!-- Stats & Analytics -->
+            <div class="mb-6 grid grid-cols-2 gap-4">
+                <div class="bg-slate-800/80 p-4 rounded-2xl border border-amber-500/20">
+                    <p class="text-[11px] text-amber-300/80 font-medium">Total Customers Logged In</p>
+                    <h3 id="totalUsers" class="text-2xl font-bold text-amber-200 mt-1 cursor-pointer underline" onclick="showUsersList()">0</h3>
+                    <p class="text-[10px] text-slate-400 mt-1">(Tap number to view list)</p>
+                </div>
+                <div class="bg-slate-800/80 p-4 rounded-2xl border border-amber-500/20">
+                    <p class="text-[11px] text-amber-300/80 font-medium">Total Products</p>
+                    <h3 id="totalProducts" class="text-2xl font-bold text-amber-200 mt-1">0</h3>
+                </div>
+            </div>
+
+            <!-- Users List Modal inside Dashboard -->
+            <div id="usersListSection" class="hidden mb-6 bg-slate-800 p-4 rounded-2xl border border-slate-700 max-h-40 overflow-y-auto">
+                <h4 class="font-semibold text-xs mb-2 text-amber-300">Registered Customer Numbers:</h4>
+                <ul id="userNumbersList" class="text-xs text-slate-300 space-y-1"></ul>
+            </div>
+
+            <!-- Growth Chart -->
+            <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700 mb-6">
+                <h4 class="font-semibold text-xs mb-3 text-amber-200">App Growth & Traffic Analytics</h4>
+                <canvas id="growthChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let products = JSON.parse(localStorage.getItem('lux_products')) || [
+            { title: "ಲಕ್ಸ್ ರೋಲೆಕ್ಸ್ ಸಬ್‌ಮರಿನರ್", price: "$15,000", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300", link: "#" },
+            { title: "ಪ್ರೀಮಿಯಂ ಮ್ಯಾಕ್‌ಬುಕ್ ಪ್ರೊ", price: "$2,800", image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300", link: "#" }
+        ];
+        let users = JSON.parse(localStorage.getItem('lux_users')) || [];
+
+        window.onload = function() {
+            if (!localStorage.getItem('lux_is_registered')) {
+                document.getElementById('userModal').style.display = 'flex';
+            }
+            renderProducts(products);
+        };
+
+        function saveUser() {
+            let mobile = document.getElementById('userMobile').value;
+            if(mobile.length === 10) {
+                users.push({ mobile: mobile, date: new Date().toLocaleDateString() });
+                localStorage.setItem('lux_users', JSON.stringify(users));
+                localStorage.setItem('lux_is_registered', 'true');
+                document.getElementById('userModal').style.display = 'none';
+            } else {
+                alert('Please enter a valid 10-digit mobile number.');
+            }
+        }
+
+        function renderProducts(list) {
+            let grid = document.getElementById('productGrid');
+            if(list.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-xs text-slate-500 py-8">No products found.</p>`;
+                return;
+            }
+            grid.innerHTML = '';
+            list.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col shadow-lg">
+                        <img src="${p.image}" class="w-full h-36 object-cover">
+                        <div class="p-3 flex flex-col flex-1 justify-between">
+                            <div>
+                                <h4 class="text-xs font-semibold text-slate-200 line-clamp-2 mb-1">${p.title}</h4>
+                                <p class="text-sm font-bold text-amber-400">${p.price}</p>
+                            </div>
+                            <a href="${p.link}" target="_blank" class="mt-3 block text-center royal-gradient text-slate-950 text-xs py-2 rounded-xl font-bold shadow hover:opacity-90">ಡೀಲ್ ನೋಡಿ</a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function searchProducts() {
+            let query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = products.filter(p => p.title.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
+        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+        function closeDashboard() { document.getElementById('adminDashboard').style.display = 'none'; }
+
+        function verifyAdmin() {
+            let pass = document.getElementById('adminPassword').value;
+            if(pass === "1234") {
+                closeAdminModal();
+                document.getElementById('adminDashboard').style.display = 'block';
+                document.getElementById('totalUsers').innerText = users.length;
+                document.getElementById('totalProducts').innerText = products.length;
+                loadChart();
+            } else {
+                alert('Incorrect Password! (Default is 1234)');
+            }
+        }
+
+        function showUsersList() {
+            let listSec = document.getElementById('usersListSection');
+            let ul = document.getElementById('userNumbersList');
+            ul.innerHTML = '';
+            if(users.length === 0) {
+                ul.innerHTML = `<li>No users logged in yet.</li>`;
+            } else {
+                users.forEach((u, index) => {
+                    ul.innerHTML += `<li>${index + 1}. Mobile: <b>${u.mobile}</b> (Date: ${u.date})</li>`;
+                });
+            }
+            listSec.classList.toggle('hidden');
+        }
+
+        function addProductManually() {
+            let title = document.getElementById('prodTitle').value;
+            let price = document.getElementById('prodPrice').value;
+            let image = document.getElementById('prodImage').value;
+            let link = document.getElementById('prodLink').value;
+
+            if(!title || !price || !image || !link) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            products.push({ title, price, image, link });
+            localStorage.setItem('lux_products', JSON.stringify(products));
+            
+            document.getElementById('prodTitle').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodImage').value = '';
+            document.getElementById('prodLink').value = '';
+
+            renderProducts(products);
+            alert('Luxury product published successfully!');
+            closeDashboard();
+        }
+
+        function loadChart() {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Today'],
+                    datasets: [{
+                        label: 'Customers Growth',
+                        data: [1, 3, 6, 9, users.length || 1],
+                        borderColor: '#d4af37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+        }
+    </script>
+</body>
+</html>
